@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+.middle--article {
+    @apply text-[1.1em];
+    @apply text-indigo-950;
+}
+
+.header--article {
+
+}

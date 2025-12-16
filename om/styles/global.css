@@ -1,0 +1,40 @@
+@import "tailwindcss";
+@import "article.css";
+@import "theme.css";
+@import "typography.css";
+
+@plugin "flyonui";
+
+.page {
+    @apply flex flex-col min-h-screen items-center;
+    @apply bg-paper-100;
+}
+
+.content {
+    @apply flex flex-col w-full items-center grow;
+}
+
+.content__top {
+    @apply flex flex-col h-12 items-center justify-center w-full bg-amber-500;
+}
+
+.top__nav {
+    @apply w-full max-w-3xl bg-blue-300;
+}
+
+.content__middle {
+    @apply w-full max-w-2xl p-2 text-base/relaxed;
+}
+
+.content__middle a {
+    @apply link link-animated;
+}
+
+.content__bottom {
+    @apply flex flex-col h-24 items-center w-full p-2 bg-amber-100;
+
+}
+
+.bottom__footer {
+    @apply bg-gray-400 max-w-2xl w-full;
+}

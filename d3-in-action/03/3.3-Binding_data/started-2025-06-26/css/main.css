@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@plugin "flyonui";
+
+.graph {
+  @apply bg-amber-50 mx-auto w-auto max-w-3xl border-gray-800 border-2 my-5;
+}
+
+.title  {
+  @apply bg-amber-300;
+}
