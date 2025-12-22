@@ -1,0 +1,37 @@
+{
+    "description": "FastLab Visualization & Documentation Knowledge Base",
+    "version": "2.1.0",
+    "libraries": {
+        "d3": {
+            "path": "visualization/d3",
+            "description": "Complex, custom visualizations"
+        },
+        "plot": {
+            "path": "visualization/plot",
+            "description": "Simple, standard statistical charts"
+        },
+        "logseq": {
+            "path": "documentation",
+            "description": "Documentation and KB management"
+        }
+    },
+    "templates": [],
+    "recipes": [
+        {
+            "library": "d3",
+            "name": "setupCanvas",
+            "file": "visualization/d3/recipes/setup-canvas.js",
+            "type": "pattern",
+            "description": "Standard Margin Convention: Creates SVG and Inner Group (bounds).",
+            "usage": "/* Insert Setup Canvas Recipe */"
+        },
+        {
+            "library": "logseq",
+            "name": "logseqMarkdown",
+            "file": "documentation/recipes/logseq.md",
+            "type": "pattern",
+            "description": "Logseq compliant markdown summary pattern.",
+            "usage": "/* Request: '정리해줘' 또는 '마크다운으로 정리해' */"
+        }
+    ]
+}

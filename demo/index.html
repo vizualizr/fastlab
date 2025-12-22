@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastLab Visualization Demo</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 2rem; max-width: 800px; margin: 0 auto; background: #f9fafb; }
+    section { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+    h2 { margin-top: 0; color: #111827; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; }
+    .chart { width: 100%; min-height: 200px; display: flex; justify-content: center; align-items: center; }
+  </style>
+</head>
+<body>
+  <h1>FastLab: D3 & Plot Workflow</h1>
+  
+  <section>
+    <h2>1. Complex: D3 Snippet (`setupCanvas`)</h2>
+    <p>Using <code>setup-canvas.js</code> snippet to handle margins, leaving logic for custom drawing.</p>
+    <div id="d3-container" class="chart"></div>
+  </section>
+
+  <section>
+    <h2>2. Simple: Observable Plot Preset</h2>
+    <p>Using <code>BasicBar.js</code> preset for instant standard charts.</p>
+    <div id="plot-container" class="chart"></div>
+  </section>
+
+  <script type="module" src="./viz-demo.js"></script>
+</body>
+</html>
