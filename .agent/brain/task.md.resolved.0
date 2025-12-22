@@ -1,0 +1,10 @@
+# Task Checklist
+
+- [/] Research changes in `.agent` and `.gemini` directories
+    - [x] Read [d:\yonggeun\porter\git\fastlab\.agent\Introduction.md](file:///d:/yonggeun/porter/git/fastlab/.agent/Introduction.md)
+    - [ ] Explore `d:\yonggeun\porter\git\fastlab\.agent\templates`
+    - [ ] Look for `.log` folder
+    - [ ] Clarify location and content of `.gemini` if empty
+- [ ] Update internal memory and instructions
+- [ ] Create/Update `memory.md` or similar artifact if appropriate
+- [ ] Verify updates with the user

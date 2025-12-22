@@ -1,0 +1,31 @@
+# FastLab Project Memory & Rules
+
+이 문서는 `.agent` 및 `.gemini` 폴더의 내용을 바탕으로 정리한 프로젝트 규칙 및 가이드라인입니다.
+
+## 1. 기본 원칙 (Introduction.md)
+- **언어 및 문체**: 답변은 한국어로 하며, 간결하고 명확하게 유지합니다.
+- **환경 유지**: 테스트 환경(`npm run dev`)을 최대한 빠르고 안정적으로 유지합니다.
+- **변경 기록**: 주요 변경 사항이 발생할 경우 `.log` 폴더(현재 미생성 시 생성 가능)에 기록합니다.
+- **학습 자료**: 사용자 요청 시 `.agent/templates` 폴더의 파일을 기반으로 학습 자료를 생성합니다.
+
+## 2. 시각화 라이브러리 (manifest.json)
+- **D3**: 복잡하고 커스텀한 시각화 담당. (`.agent/templates/d3`)
+- **Plot (Observable Plot)**: 간단하고 표준적인 통계 차트 담당. (`.agent/templates/plot`)
+- **Margin Convention**: `setupCanvas`를 사용하여 SVG 컨테이너 및 inner group(bounds)을 설정합니다. 기본 마진은 `line-chart.js` 스타일을 따릅니다:
+  - `top: 40`, `bottom: 25`, `right: 170`, `left: 40`
+  - `horizontalMargin`, `verticalMargin` 게터 포함.
+
+## 3. Logseq 관리 (logseq.md)
+- 사용자가 "마크다운으로 정리해"라고 요청하면 대화 내용을 요약/정리합니다.
+- **문체**: `-다` (개조식).
+- **형식**: 코드 블록 내부에 Logseq 호환 마크다운 작성.
+- **필수 속성**: `date-created`, `date-modified`, `division`, `stack`, `tags`, `type`, `alias`, `status: [[ai-generated]]`.
+- **Division 분류**:
+  - `[[makr]]`: 개발/성과물 (글쓰기 제외).
+  - `[[carta]]`: 독서/글쓰기.
+  - `[[mining]]`: 생계/수익 활동.
+- **Host 정보**: `[[p1]]` (주 랩탑), `[[s10e]]` (휴대폰), `[[iPad 9th]]` (가족 패드), `[[iPad Air 2]]` (아들/PDF용).
+
+## 4. 워크플로우 (backup-brain.md)
+- 에이전트 브레인(기능/계획/가이드) 백업 및 복구 프로세스가 정의되어 있습니다.
+- 현재 세션의 브레인 ID: `80f2ed6b-14b8-41ec-adf1-be7b07728f0d`
