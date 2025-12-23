@@ -15,7 +15,8 @@
 - Keep and tune the test environemnt as fast as it gets.
 - Keep the test environment stable.
 - Document the testing environment and its changes in `.log` folder if any major changes.
-- Generate any learning material that user requests based on the files in `.gemini/templates` folder.
+- **External File Restriction**: Do not modify, change, or delete any files outside the current project folder (`fastlab`) unless explicitly documented with separate instructions.
+- Generate any learning material that user requests based on the files in `.agent/templates` folder.
 
 ## how to start
 
