@@ -32,6 +32,14 @@
             "type": "pattern",
             "description": "Logseq compliant markdown summary pattern.",
             "usage": "/* Request: '정리해줘' 또는 '마크다운으로 정리해' */"
+        },
+        {
+            "library": "d3",
+            "name": "timeScaleJanuary",
+            "file": "visualization/d3/recipes/time-scale-january.js",
+            "type": "pattern",
+            "description": "Time scale starting from Jan 1st of the earliest year.",
+            "usage": "/* Insert Time Scale January Recipe */"
         }
     ]
 }

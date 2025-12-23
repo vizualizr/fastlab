@@ -122,5 +122,5 @@ a:focus {
 }
 
 .axis-x .tick line {
-  @apply stroke-blue-900;
+  @apply stroke-red-400;
 }
