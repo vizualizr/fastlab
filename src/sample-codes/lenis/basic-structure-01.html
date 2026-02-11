@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>인터랙티브 스토리텔링 아키텍처 가이드</title>
+		<style>
+			/* 1. 입력 레이어: Lenis 부드러운 스크롤 설정 */
+			html.lenis, html.lenis body {
+				height: auto;
+			}
+			.lenis.lenis-smooth {
+				scroll-behavior: auto !important;
+			}
+			.lenis-stopped {
+				overflow: hidden;
+			}
+			
+			/* 기본 스타일링 */
+			body {
+				margin: 0;
+				background-color: #020617;
+				color: #f8fafc;
+				font-family: system-ui, -apple-system, sans-serif;
+				overflow-x: hidden;
+			}
+			section {
+				height: 100vh;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				padding: 2rem;
+				position: relative;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+			}
+
+			/* 가이드 박스 스타일 */
+			.guide-box {
+				position: absolute;
+				bottom: 10%;
+				left: 50%;
+				transform: translateX(-50%);
+				background: rgba(30, 41, 59, 0.8);
+				backdrop-filter: blur(10px);
+				padding: 1rem 2rem;
+				border-radius: 2rem;
+				border: 1px solid rgba(56, 189, 248, 0.3);
+				text-align: center;
+				max-width: 80%;
+			}
+			.guide-box strong {
+				color: #38bdf8;
+				display: block;
+				margin-bottom: 0.25rem;
+			}
+
+			/* 차트 컨테이너 */
+			.chart-container {
+				width: 100%;
+				max-width: 850px;
+				height: 450px;
+				background: rgba(255, 255, 255, 0.02);
+				border: 1px solid rgba(255, 255, 255, 0.1);
+				border-radius: 1.5rem;
+				padding: 2.5rem;
+				display: flex;
+				flex-direction: column;
+			}
+			#d3-chart {
+				flex: 1;
+				width: 100%;
+			}
+			.bar {
+				fill: #38bdf8;
+			}
+			.axis-text text {
+				fill: #64748b;
+				font-size: 13px;
+			}
+			
+			h1 {
+				font-size: clamp(2.5rem, 6vw, 5rem);
+				margin: 0;
+				background: linear-gradient(to bottom right, #f8fafc, #94a3b8);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+			}
+			.highlight { color: #38bdf8; }
+			
+			@keyframes bounce {
+				0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
+				40% {transform: translateY(-10px) translateX(-50%);}
+				60% {transform: translateY(-5px) translateX(-50%);}
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<!-- 섹션 1: 입력(Input) 단계 설명 -->
+			<section id="intro">
+				<h1>Phase 1: <span class="highlight">Input</span></h1>
+				<p>지금 느끼시는 부드러운 움직임은 <strong>Lenis</strong>가 담당합니다.</p>
+				<div class="guide-box">
+					<strong>[입력 처리 중]</strong>
+					마우스 휠의 거친 입력을 Lenis가 가로채 부드러운 가속도로 변환하고 있습니다.
+				</div>
+				<div style="position: absolute; bottom: 2rem; left: 50%; animation: bounce 2s infinite;">↓</div>
+			</section>
+
+			<!-- 섹션 2: 처리(Processing) & 출력(Output) 단계 -->
+			<section id="chart-section">
+				<div class="chart-container">
+					<h2 style="margin: 0 0 2rem 0; font-size: 1.8rem;">Interactive Data Flow</h2>
+					<div id="d3-chart"></div>
+				</div>
+				<div class="guide-box" id="step-guide">
+					<strong>[처리 및 출력 대기]</strong>
+					ScrollTrigger가 섹션의 위치를 감시하고 있습니다.
+				</div>
+			</section>
+
+			<!-- 섹션 3: 결과 요약 -->
+			<section id="outro">
+				<h1>Mastered.</h1>
+				<p>이제 당신은 인터랙티브 웹의 기본 원리를 이해했습니다.</p>
+				<div class="guide-box">
+					<strong>[최종 출력 완료]</strong>
+					모든 데이터 시각화와 애니메이션이 성공적으로 렌더링되었습니다.
+				</div>
+			</section>
+		</main>
+
+		<script type="module">
+			import Lenis from 'https://cdn.jsdelivr.net/npm/lenis@1.1.18/+esm';
+			import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm';
+			import { ScrollTrigger } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger/+esm';
+			import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
+
+			gsap.registerPlugin(ScrollTrigger);
+
+			let lenis;
+
+			function init() {
+				// 1. Lenis 초기화 (부드러운 스크롤 입력 가공)
+				lenis = new Lenis({
+					duration: 1.5,
+					easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+				});
+
+				// 2. GSAP Ticker 연동 (Lenis와 애니메이션 프레임 동기화)
+				lenis.on('scroll', ScrollTrigger.update);
+				gsap.ticker.add((time) => {
+					lenis.raf(time * 1000);
+				});
+				gsap.ticker.lagSmoothing(0);
+
+				renderChart();
+			}
+
+			function renderChart() {
+				const container = document.getElementById('d3-chart');
+				if (!container) return;
+				container.innerHTML = '';
+
+				const data = [
+					{ label: 'Lenis', value: 85 },
+					{ label: 'GSAP', value: 95 },
+					{ label: 'D3.js', value: 75 },
+					{ label: 'Astro', value: 90 },
+					{ label: 'Design', value: 80 }
+				];
+
+				const width = container.clientWidth;
+				const height = container.clientHeight;
+				const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+
+				const svg = d3.select(container)
+					.append('svg')
+					.attr('width', '100%')
+					.attr('height', '100%')
+					.attr('viewBox', `0 0 ${width} ${height}`)
+					.style('overflow', 'visible');
+
+				const x = d3.scaleBand()
+					.domain(data.map(d => d.label))
+					.range([margin.left, width - margin.right])
+					.padding(0.4);
+
+				const y = d3.scaleLinear()
+					.domain([0, 100])
+					.range([height - margin.bottom, margin.top]);
+
+				// X축 렌더링
+				svg.append('g')
+					.attr('transform', `translate(0,${height - margin.bottom})`)
+					.call(d3.axisBottom(x).tickSize(0).tickPadding(12))
+					.attr('class', 'axis-text')
+					.select('.domain').remove();
+
+				// 막대 렌더링 (초기 출력 설정)
+				const bars = svg.selectAll('.bar')
+					.data(data)
+					.enter()
+					.append('rect')
+					.attr('class', 'bar')
+					.attr('x', d => x(d.label))
+					.attr('y', height - margin.bottom)
+					.attr('width', x.bandwidth())
+					.attr('height', 0)
+					.attr('rx', 6);
+
+				// GSAP ScrollTrigger를 통한 처리 & 출력
+				const guide = document.getElementById('step-guide');
+				
+				gsap.to(bars.nodes(), {
+					height: (i) => (height - margin.bottom) - y(data[i].value),
+					y: (i) => y(data[i].value),
+					duration: 1,
+					stagger: 0.1,
+					ease: "back.out(1.7)",
+					scrollTrigger: {
+						trigger: "#chart-section",
+						start: "top 60%",
+						onEnter: () => {
+							guide.innerHTML = "<strong>[처리 및 출력 시작]</strong>GSAP가 타이밍을 감지하여 D3 막대를 애니메이션합니다.";
+							guide.style.borderColor = "#38bdf8";
+						},
+						onLeaveBack: () => {
+							guide.innerHTML = "<strong>[처리 대기 중]</strong>스크롤이 올라갔습니다. 다시 내리면 실행됩니다.";
+							guide.style.borderColor = "rgba(56, 189, 248, 0.3)";
+						},
+						toggleActions: "play none none reverse"
+					}
+				});
+			}
+
+			// 브라우저 로드 시 실행
+			window.onload = init;
+			window.addEventListener('resize', renderChart);
+		</script>
+	</body>
+</html>
