@@ -3,7 +3,20 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>인터랙티브 스토리텔링 아키텍처 가이드</title>
+		<title>Lenis + GSAP + D3.js 기본 구조</title>
+		<!-- 
+		[documentation header]
+
+		purpose: Understanding how browser composite engine is intervened by Lenis and GSAP
+					and how D3.js is rendered in the browser.
+		key libriries
+		- Lenis: https://github.com/studio-freight/lenis
+		  - interceptes the scroll input and orders browser to scroll lenis-controled position.
+		- GSAP: https://greensock.com/docs/
+		  - turn the animation unit from time to scrolled position.
+		- D3.js: https://d3js.org/
+		  - basic SVG elements handling lib to draw charts and visualizationa
+		-->
 		<style>
 			/* 1. 입력 레이어: Lenis 부드러운 스크롤 설정 */
 			html.lenis, html.lenis body {
@@ -145,15 +158,37 @@
 				// 1. Lenis 초기화 (부드러운 스크롤 입력 가공)
 				lenis = new Lenis({
 					duration: 1.5,
+					/* [Easing 수식 분석]
+					   액션스크립트의 'target - position' 감속 방식(Exponential Out)을 함수형으로 구현한 것입니다.
+					   t(0~1)가 커짐에 따라 Math.pow가 급격히 0으로 수렴하며, 결과값은 1에 도달합니다.
+					   Math.min(1, ...)은 부동 소수점 오차로 인해 값이 1을 넘는 것을 방지하는 안전장치(Clamping)입니다.
+					*/
 					easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
 				});
 
 				// 2. GSAP Ticker 연동 (Lenis와 애니메이션 프레임 동기화)
 				lenis.on('scroll', ScrollTrigger.update);
+				
+				/* [Global Heartbeat System]
+				   gsap.ticker.add()로 브라우저가 전역 프레임을 갱신하는 루프에 특정 함수를 등록할 수 있다.
+				   매 프레임(60fps 등)마다 등록된 콜백이 실행되어 lenis.raf(Request Animation Frame)를 실행한다.
+				   이 과정을 거치면 스크롤 연산과 애니메이션 렌더링 주기를 일치시키는 '동기화'를 매 프레임 수행할 수 있다.
+				*/
 				gsap.ticker.add((time) => {
 					lenis.raf(time * 1000);
 				});
-				gsap.ticker.lagSmoothing(0);
+				
+				/* [Lag Smoothing 설정]
+				   역할: 시스템 부하(렉) 발생 시 GSAP이 시간을 인위적으로 보정하여 애니메이션을 '점프'시킬지 결정합니다.
+				   
+				   설정값 (0): 시간 보정 기능을 완전히 끕니다(OFF). 
+				   값이 0이 아니라 1 이상(기본값 등)일 경우, 프레임 드랍 발생 시 GSAP은 "부드러운 시각적 연결"을 위해 
+				   지연된 시간만큼 애니메이션을 강제로 앞당깁니다(Skip). 
+				   
+				   하지만 인터랙티브 웹에서는 스크롤 위치와 애니메이션 상태가 절대적으로 일치해야 하므로, 
+				   보정 기능을 끄고(0) 실제 물리적 시간을 정직하게 반영하여 '절대적 동기화'를 보장합니다.
+				*/
+					gsap.ticker.lagSmoothing(0);
 
 				renderChart();
 			}
