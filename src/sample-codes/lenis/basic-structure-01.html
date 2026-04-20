@@ -229,7 +229,7 @@
 				// X축 렌더링
 				svg.append('g')
 					.attr('transform', `translate(0,${height - margin.bottom})`)
-					.call(d3.axisBottom(x).tickSize(0).tickPadding(12))
+					.call(d3.axisBottom(x).tickSize(1).tickPadding(12))
 					.attr('class', 'axis-text')
 					.select('.domain').remove();
 
@@ -249,8 +249,10 @@
 				const guide = document.getElementById('step-guide');
 				
 				gsap.to(bars.nodes(), {
-					height: (i) => (height - margin.bottom) - y(data[i].value),
-					y: (i) => y(data[i].value),
+					attr: {
+						height: (i) => (height - margin.bottom) - y(data[i].value),
+						y: (i) => y(data[i].value) - height,
+					},
 					duration: 1,
 					stagger: 0.1,
 					ease: "back.out(1.7)",

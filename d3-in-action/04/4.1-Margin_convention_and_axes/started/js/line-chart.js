@@ -43,7 +43,7 @@ const drawLineChart = (data) => {
 
   // 2. now, chart has margin on 4 sides, and it's adjustable.
   //
-  const chart = svg
+  const innerChart = svg
     .append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
@@ -74,14 +74,19 @@ const drawLineChart = (data) => {
   const yScale = d3.scaleLinear().domain([0, maxTemp]).range([innerHeight, 0]);
 
   // 4. Construct a bottomAxis with the populated xScale.
-  //
   // xScale에서 정의역(domain)
+  // const bottomAxis = d3.axisBottom(xScale);
   const bottomAxis = d3.axisBottom(xScale).tickFormat(d3.timeFormat("%b"));
 
   const leftAxis = d3.axisLeft(yScale);
   // 생성한 축을 DOM 요소 렌더링 하기 위해 호출한다. 
-  chart.append("g").attr("class", "axis-x").call(bottomAxis);
-  // chart.append("g").attr("class", "axis-y").call(leftAxis);
+  innerChart.append("g")
+    .attr("class", "axis-x")
+    .attr("transform", `translate(0, ${innerHeight})`)
+    .call(bottomAxis);
+  innerChart.append("g")
+    .attr("class", "axis-y")
+    .call(leftAxis);
 
   d3.selectAll('.axis-x text')
     .attr("x", d => {
@@ -90,7 +95,12 @@ const drawLineChart = (data) => {
       const nextMonth = new Date(firstDateRaw.getFullYear(), currentMonth.getMonth() + 1, 1);
       return (xScale(nextMonth) - xScale(currentMonth)) / 2;
     })
-    .attr("y", "1.5rem")
+    .attr("y", "1em")
     .style("font-family", "Roboto")
-    .style("font-size", "1.3rem");
+    .style("font-size", "1em");
+
+  svg
+  .append("text")
+  .text("Temperature (℉)")
+  .attr("y", margin.top/2)
 };
