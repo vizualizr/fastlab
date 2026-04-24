@@ -7,12 +7,14 @@ const svg = d3.select(".responsive-svg-container")
 // Load, format and measure the dataset
 d3.csv("./data/data.csv", d => {
   // Format the dataset
+  console.log("datum ", d);
   return {
     technology: d.technology,
     count: +d.count
   };
 }).then(data => {
   // Log the full dataset
+  console.log("=== data ===");
   console.log(data);
 
   // How many rows the dataset contains

@@ -23,7 +23,7 @@ const drawLineChart = (data) => {
   const width = 800;
   const height = width / 2;
   const margin = {
-    top: 40,
+    top: 30,
     bottom: 25,
     right: 170,
     left: 40,
