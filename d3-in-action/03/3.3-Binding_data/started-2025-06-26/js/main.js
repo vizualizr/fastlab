@@ -82,8 +82,8 @@ d3.csv(
 });
 
 // settings
-const barHeight = 20;
-const barGap = 2;
+const barHeight = 15;
+const barGap = 8;
 
 //
 // ========== 3. BINDING ==========
@@ -118,7 +118,44 @@ const createViz = (data) => {
   const filledSelection = emptySelection
     .join("rect") // 이 한 줄로 데이터 집합에 DOM 할당이 끝난다.
     // 할당이 끝난 각 요소쌍(datum과 각 rect 요소)에 개별적으로 접근해 속성을 지정한다.
-    .attr("width", (d) => d.count) 
+    //
+    // ========== 3.1 SETTING DOM ATTRIBUTE ==========
+    // DOM 속성을 동적으로 제어하기
+    // selection.attr(name, value)은 다음과 같이 동작한다.
+    /**
+     * 선택된 요소(Selection)의 속성(Attribute)을 설정하거나 조회합니다.
+     * * @description
+     * 속성에 지정된 값을 할당한다. 
+     * 동작을 마치면 현재 작업 중인 Selection을 반환하므로 체이닝(chaining)이 가능하다.
+     * 값을 생략하면 첫 번째 요소의 속성값을 반환합니다.
+     *
+     * @param {string} name - 설정하거나 조회할 속성의 이름 (예: "width", "color").
+     * @param {string|number|boolean|function|null} [value] - 설정할 값 (선택 사항).
+     * - {Constant}: 모든 요소에 동일한 값을 적용합니다.
+     * - {Function}: 각 요소마다 실행되어 반환값을 적용합니다. (Accessor Function)
+     * - {null}: 해당 속성을 제거합니다.
+     *
+     * @returns {Selection|any}
+     * - 값을 설정한 경우: 현재의 Selection 객체 (Method Chaining 지원).
+     * - 값을 조회한 경우: 첫 번째 요소의 속성값.
+     *
+     * @example
+     * // 1. 상수(Constant)
+     * selection.attr("fill", "blue");
+     *
+     * // 2. 접근자 함수(Accessor Function) 사용
+     * // d: datum, i: index, nodes: group elements
+     * selection.attr("x", function(d, i) { return i * 20; });
+     * 
+     * // 3. 함수 객체
+     * const calcColor = (d) => d.tech === "D3" ? "orange" : "grey";
+     * selection.attr("fill", calcColor);
+     * 
+     * 
+     * // 4.  속성값 삭제
+     * selection.attr("fill", null);
+     */
+    .attr("width", (d) => d.count)
     .attr("height", barHeight)
     .attr("x", 0)
     .attr("y", (d, i) => (barHeight + barGap) * i)
