@@ -83,4 +83,20 @@ export function drawArcChart(data) {
       });
     })
     .attr("fill", "#b3b0a0");
+
+  const centroid = arcGenerator
+    .startAngle(0)
+    .endAngle(angleInRad)
+    .centroid();
+
+  innerChart
+    .append("text")
+    .text((d) => d3.format(".0%")(percentageDaysWithPrecip / 100))
+    .attr("x", centroid[0])
+    .attr("y", centroid[1])
+    .attr("text-anchor", "middle")
+    .attr("dominant-baseline", "hanging")
+    .attr("fill", "white")
+    .style("font-size", 30)
+    .style("font-weight", 500);
 }

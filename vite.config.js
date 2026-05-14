@@ -18,5 +18,10 @@ export default defineConfig({
       ignored: ["**/node_modules/**"],
     },
   },
-  plugins: [devtoolsJson(), directoryPlugin({ baseDir: __dirname })],
+  plugins: [
+    devtoolsJson(),
+    directoryPlugin({
+      baseDir: __dirname,
+    }),
+  ],
 });
