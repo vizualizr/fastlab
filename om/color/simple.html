@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DaisyUI theme tester</title>
     <link rel="stylesheet" href="./css/base.css" />
-    <script type="module" src="./js/main.js"></script>
+    <script type="module" src="./js/main2.js"></script>
   </head>
   <body>
     <!-- standby modal while loading fonts  -->
@@ -36,6 +36,10 @@
         class="select select-sm"
         style="display: none"
       ></select>
+      <!-- 재방문 시 혹은 폴더 로드 후 나타날 해제 버튼 (초기 숨김) -->
+      <button id="clear-cache-btn" style="display: none">
+        다시 선택 (캐시 비우기)
+      </button>
     </div>
     <div
       class="text-base-content pt-6 transition-colors duration-500 bg-base-200"
