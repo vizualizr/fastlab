@@ -34,8 +34,29 @@
     --depth: 0;
     --noise: 0;
     --font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-heading: serif;
+    --font-body: sans-serif;
 }
 
 @plugin "daisyui" {
     themes: newspaper --default;
+}
+
+/* 제목 폰트: h1~h6 */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
+html {
+  font-size: 18px;
+}
+
+/* 본문 폰트 */
+body {
+  font-family: var(--font-body);
 }

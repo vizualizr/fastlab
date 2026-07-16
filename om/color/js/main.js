@@ -38,8 +38,14 @@ document
         statusEl.textContent += ` (로드 가능 ${fontFileList.length}개)`;
 
         // 드랍다운 메뉴 생성
-        renderFontDropdown(fontFileList);
-        console.log(`"${fontFileList[0].familyName}" 폰트 등록 및 적용 완료`);
+        renderFontDropdown('heading-font-select', fontFileList);
+        renderFontDropdown('body-font-select', fontFileList);
+
+        if (fontFileList.length > 0) {
+          console.log(`폰트 ${fontFileList.length}개 목록 준비 완료`);
+        } else {
+          console.log("로드 가능한 폰트를 찾지 못했습니다.");
+        }
 
         progressModal.close();   // ← 대기 화면 종료
       }
@@ -49,14 +55,25 @@ document
     }
   });
 
-  // 선택한 폰트를 적용
-document.getElementById('font-select').addEventListener('change', (e) => {
+// 제목 폰트 선택
+document.getElementById('heading-font-select').addEventListener('change', (e) => {
   const idx = Number(e.target.value);
   const selectedItem = fontFileList[idx];
   if (selectedItem) {
     addFontToDocument(selectedItem.fontFace);
-    applyFontAsDefault(selectedItem.fontFace);
-    console.log(`"${selectedItem.familyName}" 폰트로 변경 적용`);
+    applyHeadingFont(selectedItem.fontFace);
+    console.log(`제목 폰트: "${selectedItem.familyName}"`);
+  }
+});
+
+// 본문 폰트 선택
+document.getElementById('body-font-select').addEventListener('change', (e) => {
+  const idx = Number(e.target.value);
+  const selectedItem = fontFileList[idx];
+  if (selectedItem) {
+    addFontToDocument(selectedItem.fontFace);
+    applyBodyFont(selectedItem.fontFace);
+    console.log(`본문 폰트: "${selectedItem.familyName}"`);
   }
 });
 
@@ -83,13 +100,12 @@ async function scanFontFiles(dirHandle, path = "") {
   return files;
 }
 
-async function getFontNameInfo(fileHandle) {
-  const file = await fileHandle.getFile();
-  const buf = await file.arrayBuffer();
+async function getFontNameInfo(fileHandle, buffer = null) {
+  const buf = buffer || (await (await fileHandle.getFile()).arrayBuffer());
   const view = new DataView(buf);
 
   const tag = view.getUint32(0);
-  if (tag === 0x774f4646) return null; // woff, 별도 처리 필요
+  if (tag === 0x774f4646 || tag === 0x774f4632) return null; // woff, woff2 — 별도 처리 필요
 
   const numTables = view.getUint16(4);
   let nameTableOffset = null;
@@ -141,14 +157,20 @@ async function getFontNameInfo(fileHandle) {
   };
 }
 
-// 중복 폰트를 제거하고 폰트 목록을 알파벳 순서로 정렬.
+// 중복 폰트를 제거하고 폰트 목록을 알파벳 순서로 정렬. (buffer 캐싱)
 async function dedupeByFontName(fileList) {
   const seen = new Map();
   for (const item of fileList) {
-    const info = await getFontNameInfo(item.handle);
-    const key = info ? info.fullName : item.name;
-    if (!seen.has(key)) {
-      seen.set(key, { ...item, familyName: key });
+    try {
+      const file = await item.handle.getFile();
+      const buffer = await file.arrayBuffer();
+      const info = await getFontNameInfo(item.handle, buffer);
+      const key = info ? info.fullName : item.name;
+      if (!seen.has(key)) {
+        seen.set(key, { ...item, buffer, familyName: key });
+      }
+    } catch (err) {
+      console.warn(`"${item.name}" 파일 읽기 실패:`, err.message);
     }
   }
   const result = Array.from(seen.values());
@@ -156,9 +178,14 @@ async function dedupeByFontName(fileList) {
   return result;
 }
 
-// 등록된 폰트를 페이지 기본 폰트로 적용.
-function applyFontAsDefault(fontFace) {
-  document.body.style.fontFamily = `"${fontFace.family}", sans-serif`;
+// 제목 폰트 적용
+function applyHeadingFont(fontFace) {
+  document.documentElement.style.setProperty('--font-heading', `"${fontFace.family}"`);
+}
+
+// 본문 폰트 적용
+function applyBodyFont(fontFace) {
+  document.documentElement.style.setProperty('--font-body', `"${fontFace.family}"`);
 }
 
 // 등록(document.fonts.add)만 별도로 분리
@@ -168,27 +195,27 @@ function addFontToDocument(fontFace) {
 
 // main.js에 추가 — 전체 목록을 미리 로드 테스트해서 실패하는 폰트 제외:
 async function filterLoadableFonts(fileList) {
-  const loadable = [];
-  for (const item of fileList) {
+  const loadPromises = fileList.map(async (item) => {
     try {
-      const file = await item.handle.getFile();
-      const buf = await file.arrayBuffer();
-      const fontFace = new FontFace(item.familyName, buf);
+      const fontFace = new FontFace(item.familyName, item.buffer);
       await fontFace.load();
-      loadable.push({ ...item, fontFace });
+      return { ...item, fontFace };
     } catch (err) {
       console.warn(
         `"${item.familyName}" 로드 실패 — 목록에서 제외:`,
         err.message,
       );
+      return null;
     }
-  }
-  return loadable;
+  });
+
+  const results = await Promise.all(loadPromises);
+  return results.filter(r => r !== null);
 }
 
-// 드랍다운 렌더링 함수 추가:
-function renderFontDropdown(fontList) {
-  const selectEl = document.getElementById("font-select");
+// 드랍다운 렌더링 함수
+function renderFontDropdown(selectId, fontList) {
+  const selectEl = document.getElementById(selectId);
   selectEl.innerHTML = "";
 
   fontList.forEach((item, idx) => {
@@ -199,8 +226,6 @@ function renderFontDropdown(fontList) {
   });
 
   selectEl.style.display = fontList.length > 0 ? "inline-block" : "none";
-
-  console.log("dropdown rendering completed");
 }
 
 // event blocker for modal to disable ESC event.

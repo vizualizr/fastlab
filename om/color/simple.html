@@ -21,14 +21,19 @@
     </dialog>
 
     <!-- font folder selector -->
-    <div class="font-setter navbar bg-base-300">
+    <div class="font-setter navbar bg-base-300 gap-2">
       <button id="folder-picker-btn" class="btn btn-xs btn-neutral">
         폰트 폴더 선택
       </button>
-      <span id="folder-status" class="text-xs opacity-60 ml-2"></span>
+      <span id="folder-status" class="text-xs opacity-60"></span>
       <select
-        id="font-select"
-        class="select select-sm ml-2"
+        id="heading-font-select"
+        class="select select-sm"
+        style="display: none"
+      ></select>
+      <select
+        id="body-font-select"
+        class="select select-sm"
         style="display: none"
       ></select>
     </div>
