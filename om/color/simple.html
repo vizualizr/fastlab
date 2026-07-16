@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DaisyUI theme tester</title>
+    <link rel="stylesheet" href="./css/base.css" />
+    <script type="module" src="./js/main.js"></script>
+  </head>
+  <body>
+    <div class="font-setter navbar bg-base-200">
+      <button id="folder-picker-btn" class="btn btn-xs btn-neutral btn-outline">
+        폰트 폴더 선택
+      </button>
+      <span id="folder-status" class="text-xs opacity-60 ml-2"></span>
+      <select
+        id="font-select"
+        class="select select-sm ml-2"
+        style="display: none"
+      ></select>
+      <!-- standby modal while loading fonts  -->
+      <dialog id="scan-progress-modal" class="modal">
+        <div class="modal-box">
+          <h3 class="text-lg font-bold">폰트 스캔 중...</h3>
+          <p class="py-4" id="scan-progress-text">폴더를 스캔하고 있습니다.</p>
+          <progress class="progress w-full"></progress>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+
+      <!-- test  -->
+
+    </div>
+    <span id="folder-status" class="text-xs opacity-60 ml-2"></span>
+    <div
+      class="text-base-content pt-6 transition-colors duration-500 bg-base-200"
+    >
+      <div class="flex items-center justify-between gap-4 px-8 ps-10">
+        <h2 class="font-title text-lg md:max-lg:hidden">UI 요소 배색 예시</h2>
+      </div>
+      <div class="px-8 py-6">
+        <div
+          class="text-base-content mx-auto grid gap-6 pb-20 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 [&amp;_.carbon-responsive-wrap]:flex-nowrap! [&amp;_.carbon-responsive-wrap]:text-[11px]! [&amp;_:is(div,button)]:[transition:background-color_0ms,border-color_100ms,box-shadow_300ms,border-radius_500ms_ease-out] [&amp;&gt;*]:mb-6"
+        >
+          <div class="flex flex-col gap-4">
+            <div class="card bg-base-100 card-border border-base-300 card-sm">
+              <div class="card-body gap-4">
+                <h2 class="flex items-center justify-between">
+                  <span class="flex items-center gap-2 font-semibold"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="size-5 opacity-40"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z"
+                      ></path>
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z"
+                      ></path>
+                    </svg>
+                    미리보기</span
+                  >
+                  <span class="link text-xs">더 보기</span>
+                </h2>
+                <div>
+                  <span class="badge badge-soft"
+                    >신발
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                      class="size-3"
+                    >
+                      <path
+                        d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                      ></path></svg
+                  ></span>
+                  <span class="badge badge-soft"
+                    >가방
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                      class="size-3"
+                    >
+                      <path
+                        d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                      ></path></svg
+                  ></span>
+                </div>
+                <div class="flex flex-col">
+                  <div
+                    class="border-b-base-content/5 flex items-center justify-between gap-2 border-b border-dashed py-2"
+                  >
+                    <label
+                      class="flex cursor-pointer items-center gap-2 select-none"
+                      ><input
+                        type="checkbox"
+                        class="checkbox checkbox-sm"
+                        checked=""
+                      />
+                      <span>후디스</span></label
+                    >
+                    <span class="badge badge-xs badge-neutral font-mono"
+                      >25</span
+                    >
+                  </div>
+                  <div
+                    class="border-b-base-content/5 flex items-center justify-between gap-2 border-b border-dashed py-2"
+                  >
+                    <label
+                      class="flex cursor-pointer items-center gap-2 select-none"
+                      ><input
+                        type="checkbox"
+                        class="checkbox checkbox-sm"
+                        checked=""
+                      />
+                      <span>가방</span></label
+                    >
+                    <span class="badge badge-xs badge-neutral font-mono"
+                      >3</span
+                    >
+                  </div>
+                  <div
+                    class="border-b-base-content/5 flex items-center justify-between gap-2 border-b border-dashed py-2"
+                  >
+                    <label
+                      class="flex cursor-pointer items-center gap-2 select-none"
+                      ><input type="checkbox" class="checkbox checkbox-sm" />
+                      <span>신발</span></label
+                    >
+                    <span class="badge badge-xs badge-warning font-mono"
+                      >0</span
+                    >
+                  </div>
+                  <div
+                    class="border-b-base-content/5 flex items-center justify-between gap-2 border-b border-dashed py-2"
+                  >
+                    <label
+                      class="flex cursor-pointer items-center gap-2 select-none"
+                      ><input type="checkbox" class="checkbox checkbox-sm" />
+                      <span>액세서리</span></label
+                    >
+                    <span class="badge badge-xs badge-neutral font-mono"
+                      >4</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
