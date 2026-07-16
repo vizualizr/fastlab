@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.11",
@@ -14,7 +15,8 @@
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.11",
     "vite": "^7.0.5",
-    "vite-plugin-devtools-json": "^0.3.0"
+    "vite-plugin-devtools-json": "^0.3.0",
+    "vitest": "^4.1.10"
   },
   "dependencies": {
     "@observablehq/plot": "^0.6.17",

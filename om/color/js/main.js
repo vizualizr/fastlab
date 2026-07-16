@@ -1,6 +1,6 @@
 let fontDirHandle = null;
 
-const EXCLUDED_DIRS = [".rejected"];
+const EXCLUDED_DIRS = [".rejected", ".zipped"];
 // const FONT_DIR = [""];
 
 function normalizeFontKey(str) {
