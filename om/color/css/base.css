@@ -1,0 +1,42 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/postcss";
+
+@plugin "daisyui" {
+    themes: newspaper --default;
+}
+
+@plugin "daisyui/theme" {
+    name: "newspaper";
+    default: true;
+    prefersdark: false;
+    color-scheme: "light";
+    --color-base-100: #edece8;
+    --color-base-200: #dfded7;
+    --color-base-300: #c2c5b9;
+    --color-base-content: #000002;
+    --color-primary: #004b73;
+    --color-primary-content: #ffffff;
+    --color-secondary: #434f63;
+    --color-secondary-content: #ffffff;
+    --color-accent: #11083a;
+    --color-accent-content: #ffffff;
+    --color-neutral: #555555;
+    --color-neutral-content: #ffffff;
+    --color-info: #9ed6ed;
+    --color-info-content: #002336;
+    --color-success: #b6e2a2;
+    --color-success-content: #153308;
+    --color-warning: #eab308;
+    --color-warning-content: #2e1f00;
+    --color-error: #8b0000;
+    --color-error-content: #ffffff;
+    --radius-selector: 0.25rem;
+    --radius-field: 2rem;
+    --radius-box: 0.5rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 0;
+    --noise: 0;
+    --font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
