@@ -1,5 +1,4 @@
 @import "tailwindcss";
-/* @plugin "@tailwindcss/postcss"; */
 @plugin "daisyui/theme" {
     name: "newspaper";
     default: true;
@@ -34,7 +33,7 @@
     --depth: 0;
     --noise: 0;
     --font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-    --font-heading: serif;
+    --font-heading: sans-serif;
     --font-body: sans-serif;
 }
 
