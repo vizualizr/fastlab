@@ -20,7 +20,7 @@ export default defineConfig({
         "**/.git/**",
         "**/.vite/**",
         "**/dist/**",
-        "**/d3-in-action/**",
+        // "**/d3-in-action/**",
       ],
     }, // 👈 watch를 닫는 중괄호 추가
   }, // 👈 server를 닫는 중괄호
@@ -40,6 +40,7 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
+      entries: ["index.html", "src/main.js"], // 엔트리 파일을 명시적으로 지정, 이렇게 하면 d3-in-acton 폴더 아래 있는 파일의 의존성 검사를 건너뛴다.
     // 비트 서버 시작 시점에 의존성(라이브러리) 검사를 할 파일을 직접 지정하는 옵션이다.
     // 여기에 적히지 않은 html 파일도 브라우저가 요청하면
     // 실시간으로 파일을 컴파일 하므로 HMR은 정상 작동한다.
